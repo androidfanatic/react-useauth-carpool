@@ -13,7 +13,7 @@ const Home: React.FC = () => {
   }
 
   return (
-    <React.Fragment>
+    <>
       <Container className="pt-4" fluid>
         <Row>
           <Col className="center-text">
@@ -24,7 +24,7 @@ const Home: React.FC = () => {
           </Col>
         </Row>
       </Container>
-    </React.Fragment>
+    </>
   );
 };
 
