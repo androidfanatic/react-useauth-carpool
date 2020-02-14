@@ -92,7 +92,7 @@ const Home: React.FC = () => {
                 <th>Going From</th>
                 <th>Going To</th>
                 <th>Time</th>
-                <th>Cell</th>
+                <th>Phone</th>
               </tr>
             </thead>
             <tbody>
