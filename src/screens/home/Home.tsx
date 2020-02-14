@@ -146,10 +146,10 @@ const Home: React.FC = () => {
           {requests.length === 0 ? (
             <Col className="pt-4 text-center h4">
               {loading ? (
-                <>
+                <h3>
                   <Spinner className="d-block mx-auto my-4" animation="grow" />
                   Getting all carpool requests...
-                </>
+                </h3>
               ) : (
                 'There is nothing here yet.'
               )}
@@ -179,7 +179,7 @@ const Home: React.FC = () => {
                 <tbody>
                   {requests.map((carpoolRequest, idx) => (
                     <tr key={idx}>
-                      <td>{idx}</td>
+                      <td>{idx + 1}</td>
                       <td>{carpoolRequest.type}</td>
                       <td>{carpoolRequest.name}</td>
                       <td>{carpoolRequest.from}</td>
