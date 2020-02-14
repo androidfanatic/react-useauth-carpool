@@ -40,7 +40,23 @@ const Home: React.FC = () => {
     mobile: '',
   });
   const [isFormValid, setFormValid] = useState(false);
+  const { isAuthenticated, login, user, logout } = useAuth();
 
+  // functions
+  const handleClose = () => setAddModalShown(false);
+  const handleShow = () => setAddModalShown(true);
+  const handleAdd = () => {
+    setAddModalShown(false);
+    const dbRef = db?.ref('/requests');
+    if (dbRef !== undefined && request !== null) {
+      const newRequestKey = dbRef.push().key;
+      if (newRequestKey !== null) {
+        dbRef.update({
+          [newRequestKey?.toString()]: request,
+        });
+      }
+    }
+  };
   const requestSchema = yup.object().shape({
     type: yup
       .string()
@@ -65,21 +81,7 @@ const Home: React.FC = () => {
     mobile: yup.string().required(),
   });
 
-  const handleClose = () => setAddModalShown(false);
-  const handleShow = () => setAddModalShown(true);
-  const handleAdd = () => {
-    setAddModalShown(false);
-    const dbRef = db?.ref('/requests');
-    if (dbRef !== undefined && request !== null) {
-      const newRequestKey = dbRef.push().key;
-      if (newRequestKey !== null) {
-        dbRef.update({
-          [newRequestKey?.toString()]: request,
-        });
-      }
-    }
-  };
-
+  // effects
   useEffect(() => {
     requestSchema
       .isValid(request)
@@ -113,8 +115,6 @@ const Home: React.FC = () => {
       ref.off('value');
     };
   }, []);
-
-  const { isAuthenticated, login, user, logout } = useAuth();
 
   if (!isAuthenticated()) {
     return <Redirect to="/login" />;
