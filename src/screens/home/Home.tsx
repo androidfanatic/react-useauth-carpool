@@ -1,4 +1,5 @@
 import * as firebase from 'firebase/app';
+import 'firebase/database';
 import React, { useEffect, useState } from 'react';
 import { Button, Col, Container, Form, Modal, Nav, Navbar, Row, Spinner, Table } from 'react-bootstrap';
 import { Redirect } from 'react-router-dom';
@@ -98,18 +99,21 @@ const Home: React.FC = () => {
 
     setLoading(true);
     setRequests([]);
-    firebase
-      .database()
-      .ref('/requests')
-      .on('value', value => {
-        const newRequests: RequestType[] = [];
-        value.forEach(newRequest => {
-          newRequests.push(newRequest.val());
-        });
-        setRequests(newRequests);
-        setLoading(false);
+    const ref = firebase.database().ref('/requests');
+    ref.on('value', value => {
+      const newRequests: RequestType[] = [];
+      value.forEach(newRequest => {
+        newRequests.push(newRequest.val());
       });
-  }, [addModalShown]);
+      setRequests(newRequests);
+      setLoading(false);
+    });
+
+    return () => {
+      ref.off('value');
+    };
+  }, []);
+
   const { isAuthenticated, login, user, logout } = useAuth();
 
   if (!isAuthenticated()) {
