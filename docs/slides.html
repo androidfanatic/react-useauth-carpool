@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Quick and Easy Authentication with useAuth()</title>
+    <meta charset="utf-8">
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+      body { font-family: 'Droid Serif'; }
+      h1, h2, h3 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: normal;
+      }
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+class: center, middle
+
+# QUICK AND EASY 
+
+## Authentication with <i>`useAuth();`</i>
+
+---
+
+## Agenda
+
+1. Introduction
+2. Setup an Auth0 account
+3. Add authentication to React app
+4. Adding a new auth provider
+
+---
+
+# Introduction
+
+Auth0: https://auth0.com/
+
+useAuth(): https://github.com/Swizec/useAuth
+
+---
+
+## Setup an Auth0 account
+
+- Free-tier
+  - Up to 7k active users
+  - 2 IDP integrations
+  - https://auth0.com
+
+- Setup an Auth0 application
+  - Single page web app
+  - Configure app
+    - callback url: http://localhost:3000/auth0_callback
+    - Allowed web origin: http://localhost:3000
+    - Allowed logout url: http://localhost:3000
+    - Keep a copy of Domain and Client Id
+
+---
+
+## Add authentication to React app
+
+##### 1. Install react-use-auth
+
+```bash
+npm install react-use-auth
+```
+---
+
+## Add authentication to React app
+
+##### 2. Wrap all the application routes in AuthProvider
+
+```js
+import React from 'react';
+import { useHistory } from 'react-router-dom';
+import { AuthProvider } from 'react-use-auth';
+const Auth: React.FC = ({ children }) => {
+  const history = useHistory();
+
+  return (
+    <AuthProvider
+      navigate={(path: string) => history.push(path)}
+      auth0_domain="carpool-live.auth0.com"
+      auth0_client_id="ziZ9tc6n5rHN7EJNhTCWgHGVEaAtCfRw"
+      auth0_params={{}}
+    >
+      {children}
+    </AuthProvider>
+  );
+};
+
+export default Auth;
+```
+
+Note: navigate(), <a href="https://github.com/Swizec/useAuth#3-create-the-callback-page" target="_blank">auth0_params</a> 
+
+---
+
+## Add authentication to React app
+
+##### 3. Setup a auth callback page
+
+```js
+import React, { useEffect } from 'react';
+import { Container } from 'react-bootstrap';
+import { useAuth } from 'react-use-auth';
+
+const Auth0CallbackPage: React.FC = () => {
+  const { handleAuthentication } = useAuth();
+  useEffect(() => {
+    handleAuthentication({ postLoginRoute: '/' });
+  }, [handleAuthentication]);
+
+  return (
+    <Container>
+      <h1>
+          This is the auth callback page,
+          you should be redirected immediately.
+      </h1>
+    </Container>
+  );
+};
+
+export default Auth0CallbackPage;
+```
+
+```html
+<Route exact path="/auth0_callback" render={() => <AuthCallback />} />
+```
+
+- Note: handleAuthentication(), postLoginRoute, auth0 application setting
+
+---
+
+## Add authentication to React app
+
+##### 4. Start using auth in react components
+
+```js
+const { isAuthenticated, login, user, logout } = useAuth();
+```
+
+```html
+{isAuthenticated() ? (
+    <>
+      Hi, {user.name}
+      <Button size="sm" className="ml-3" variant="outline-primary" onClick={logout}>
+        Logout
+      </Button>
+    </>
+  ) : (
+    <Button size="sm" variant="outline-primary" onClick={login}>
+      Login
+    </Button>
+  )}
+```
+
+Note: isAuthenticated(), user, inspect user
+
+    </textarea>
+    <script src="https://remarkjs.com/downloads/remark-latest.min.js">
+    </script>
+    <script>
+      var slideshow = remark.create();
+    </script>
+  </body>
+</html>

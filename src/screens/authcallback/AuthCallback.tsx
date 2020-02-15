@@ -1,5 +1,3 @@
-// src/pages/auth0_callback
-
 import React, { useEffect } from 'react';
 import { Container } from 'react-bootstrap';
 import { useAuth } from 'react-use-auth';
