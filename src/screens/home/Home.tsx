@@ -8,13 +8,13 @@ import * as yup from 'yup';
 import './Home.scss';
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyCf1SnE4INHiSPZ8gnaosAmqHeIH87bnzM',
-  authDomain: 'carpool-live.firebaseapp.com',
-  databaseURL: 'https://carpool-live.firebaseio.com',
-  projectId: 'carpool-live',
-  storageBucket: 'carpool-live.appspot.com',
-  messagingSenderId: '448119506013',
-  appId: '1:448119506013:web:bf3b835791e418230379b4',
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+  databaseURL: process.env.REACT_APP_FIREBASE_DATABASE_URL,
+  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET_URL,
+  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_FIREBASE_APP_ID,
 };
 
 export interface RequestType {

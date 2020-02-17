@@ -7,8 +7,8 @@ const Auth: React.FC = ({ children }) => {
   return (
     <AuthProvider
       navigate={(path: string) => history.push(path)}
-      auth0_domain="carpool-live.auth0.com"
-      auth0_client_id="ziZ9tc6n5rHN7EJNhTCWgHGVEaAtCfRw"
+      auth0_domain={process.env.REACT_APP_AUTH0_DOMAIN || ''}
+      auth0_client_id={process.env.REACT_APP_AUTH0_CLIENT_ID || ''}
       auth0_params={{}}
     >
       {children}
